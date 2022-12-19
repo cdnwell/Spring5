@@ -9,6 +9,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import spring.ChangePasswordService;
 import spring.MemberDao;
+import spring.MemberInfoPrinter;
+import spring.MemberListPrinter;
+import spring.MemberPrinter;
+import spring.MemberRegisterService;
 
 @Configuration
 public class AppCtx {
@@ -43,10 +47,33 @@ public class AppCtx {
 	}
 	
 	@Bean
+	public MemberRegisterService memberRegSvc() {
+		return new MemberRegisterService(memberDao());
+	}
+	
+	@Bean
 	public ChangePasswordService changePwdSvc() {
 		ChangePasswordService pwdSvc = new ChangePasswordService();
 		pwdSvc.setMemberDao(memberDao());
 		return pwdSvc;
+	}
+	
+	@Bean
+	public MemberPrinter memberPrinter() {
+		return new MemberPrinter();
+	}
+	
+	@Bean
+	public MemberListPrinter listPrinter() {
+		return new MemberListPrinter(memberDao(), memberPrinter());
+	}
+	
+	@Bean
+	public MemberInfoPrinter infoPrinter() {
+		MemberInfoPrinter infoPrinter = new MemberInfoPrinter();
+		infoPrinter.setMemberDao(memberDao());
+		infoPrinter.setPrinter(memberPrinter());
+		return infoPrinter;
 	}
 
 }
