@@ -59,9 +59,12 @@ public class Member {
 	
 	public void changePassword(String oldPassword, String newPassword) {
 		if(!password.equals(oldPassword))
-			throw new WrondIdPasswordException();
+			throw new WrongIdPasswordException();
 		this.password = newPassword;
 	}
 
+	public boolean matchPassword(String password) {
+		return this.password.equals(password);
+	}
 	
 }
